@@ -1,9 +1,19 @@
-const express = require('express');
 const serverless = require('serverless-http');
+const express = require('express');
 
-// Import your existing app from server.js
-// Adjust the path if needed based on where this file is located
-const app = require('../../server');
+// Create a new Express app for serverless environment
+const app = express();
 
-// Export the serverless function
+// Import your routes, middleware, etc.
+// Don't import your entire server.js - instead, recreate the necessary parts
+const routes = require('../../routes'); // adjust path as needed
+
+// Add middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Use your routes
+app.use('/api', routes);
+
+// Export the handler
 module.exports.handler = serverless(app);
